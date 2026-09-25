@@ -285,11 +285,11 @@ Vimera is currently under active development.
 The initial development roadmap is:
 
 ```text
-v0.1  Configuration + CLI foundation
-v0.2  NCBI genome retrieval and selection
-v0.3  Illumina simulation
-v0.4  ONT simulation
-v0.5  Rich background/community generation
+v0.1  Configuration + CLI foundation [done]
+v0.2  NCBI genome retrieval and selection [done]
+v0.3  Illumina simulation [done]
+v0.4  ONT simulation [done]
+v0.5  Rich background/community generation [done]
 v0.6  Empirical null distributions
 v0.7  Controlled spike-ins
 v0.8  Near-neighbor challenges
