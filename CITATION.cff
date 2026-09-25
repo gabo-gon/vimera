@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+title: "VIMERA: A reproducible framework for synthetic virome benchmarking and empirical assessment of viral detection"
+message: "If you use VIMERA, please cite the manuscript in preparation and credit the VIMERA authors."
+type: software
+
+authors:
+  - family-names: Gonzalez
+    given-names: Gabriel
+
+version: 0.1.0
+date-released: 2026-09-11
+
+repository-code: "https://github.com/PLACEHOLDER/VIMERA"
+
+abstract: >
+  VIMERA is a reproducible framework for benchmarking viral metagenomics
+  pipelines through controlled synthetic virome generation and empirical
+  assessment of viral detection in real sequencing datasets. The framework
+  integrates taxonomy-aware genome selection, established sequencing
+  simulators, read-level ground truth, empirical null distributions,
+  controlled spike-in experiments, and detection performance assessment.
+
+keywords:
+  - viral metagenomics
+  - viromics
+  - bioinformatics
+  - benchmarking
+  - virus detection
+  - synthetic metagenomics
+  - sequencing simulation
+  - taxonomy
+  - reproducibility
+
+license: "VIMERA Attribution License"
+
+preferred-citation:
+  type: article
+  title: "VIMERA: A reproducible framework for synthetic virome benchmarking and empirical assessment of viral detection"
+  authors:
+    - family-names: Gonzalez
+      given-names: Gabriel
+  year: 2026
+  status: "manuscript in preparation"

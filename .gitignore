@@ -1,0 +1,164 @@
+# ============================================================
+# Vimera
+# ============================================================
+
+# ----------------------------
+# Python
+# ----------------------------
+**pycache**/
+*.py[cod]
+*$py.class
+*.so
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+.venv313/
+venv/
+env/
+ENV/
+test_results/
+results/
+scratch/
+tmp/
+temp/
+
+# ----------------------------
+# Downloaded / locally resolved reference data
+# ----------------------------
+data/
+reference/
+references/
+genomes/
+ncbi_data/
+
+# ----------------------------
+# Local Conda / environment artifacts
+# ----------------------------
+.mamba/
+micromamba/
+conda-bld/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.test_ncbi/
+
+# Type checking / linting
+.mypy_cache/
+.ruff_cache/
+
+# ----------------------------
+# Jupyter / interactive tools
+# ----------------------------
+.ipynb_checkpoints/
+# ----------------------------
+
+# Operating system
+# ----------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ----------------------------
+# IDEs / editors
+# ----------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Positron / RStudio local state
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# ----------------------------
+# Logs
+# ----------------------------
+*.log
+logs/
+# ----------------------------
+# Temporary files
+# ----------------------------
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+# ----------------------------
+# Vimera generated results
+# ----------------------------
+results/*
+!results/.gitkeep
+# Synthetic datasets
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.fasta
+*.fa
+*.fna
+*.fasta.gz
+*.fa.gz
+*.fna.gz
+# Alignment / sequencing files
+*.bam
+*.bai
+*.sam
+*.cram
+*.crai
+# Large intermediate files
+*.dcd
+*.bcf
+*.vcf
+*.vcf.gz
+# ----------------------------
+# Downloaded reference data
+# ----------------------------
+data/
+reference/
+references/
+genomes/
+ncbi_data/
+# ----------------------------
+# Snakemake
+# ----------------------------
+.snakemake/
+*.snakemake_timestamp
+# ----------------------------
+# Conda / workflow artifacts
+# ----------------------------
+.mamba/
+micromamba/
+conda-bld/
+# ----------------------------
+# Local configuration / secrets
+# ----------------------------
+.env
+.env.*
+!.env.example
+# ----------------------------
+# OS / local project metadata
+# ----------------------------
+*.local
+local/
+scratch/
+# ----------------------------
+# Generated reports
+# ----------------------------
+*.html
+*.pdf
+# Keep explicitly tracked documentation reports if desired
+# docs/generated/

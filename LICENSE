@@ -1,0 +1,62 @@
+VIMERA ATTRIBUTION LICENSE
+Version 1.0 — September 2026
+
+Copyright © 2026 VIMERA authors.
+
+VIMERA is free software. Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to use, reproduce, modify, adapt, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is provided to do so, subject to the following conditions:
+
+1. ATTRIBUTION
+
+Any publication, presentation, report, software package, dataset, derivative work, or other public or private work that uses, incorporates, modifies, or is substantially based on VIMERA must give appropriate credit to:
+
+```
+VIMERA
+```
+
+and to the authors of VIMERA.
+
+The attribution must be reasonably visible and appropriate to the medium in which VIMERA is used. Where applicable, attribution should include the VIMERA project name, the authors, the project repository, and the citation specified by the VIMERA authors.
+
+For scientific publications, the preferred form of credit is citation of the VIMERA publication or citation record specified in the project documentation, when available.
+
+2. PRESERVATION OF ATTRIBUTION
+
+Copies or substantial portions of the Software must retain this copyright notice, this license, and the attribution requirement described above.
+
+Derivative works must clearly indicate that they are derived from or incorporate VIMERA and must not represent VIMERA itself as the sole work of the derivative-work authors.
+
+3. MODIFICATION
+
+Permission is granted to modify and adapt the Software for any purpose, including research, educational, governmental, nonprofit, and commercial purposes.
+
+Modified versions may be distributed under the terms of this license or under other terms, provided that the attribution requirements of this license are satisfied and the modified version does not falsely imply that it is an official release of VIMERA.
+
+4. REDISTRIBUTION
+
+Permission is granted to redistribute the original or modified Software in source or compiled form, provided that the attribution and copyright notices required by this license are retained.
+
+5. NO TRADEMARK RIGHTS
+
+This license does not grant permission to use the names, logos, or trademarks associated with VIMERA or its authors for purposes that imply endorsement, affiliation, or official status without prior written permission.
+
+6. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE VIMERA AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+7. CITATION
+
+Users of VIMERA are strongly encouraged to cite the VIMERA publication or citation record identified in the project's documentation.
+
+The VIMERA authors may update the recommended citation as the project develops. The current recommended citation is provided in the project's CITATION.cff file and/or README documentation.
+
+8. THIRD-PARTY SOFTWARE AND DATA
+
+This license applies only to VIMERA itself and does not supersede the licenses, terms of use, or attribution requirements of third-party software, databases, reference genomes, datasets, or other resources used by VIMERA.
+
+Users are responsible for complying with the applicable licenses and terms governing such third-party resources.
+
+---
+
+By using, reproducing, modifying, distributing, or incorporating VIMERA, you agree to the terms of this license.
