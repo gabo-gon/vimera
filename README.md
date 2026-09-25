@@ -360,6 +360,85 @@ Vimera follows several principles:
 9. **Configuration and CLI are equivalent interfaces**
    YAML and command-line execution should produce the same underlying experiment configuration.
 
+````markdown
+## Installation
+
+> 🚧 VIMERA is currently under active development. The current release
+> focuses on synthetic viral metagenome simulation and ground-truth
+> generation. Downstream benchmark evaluation components are not yet
+> fully implemented.
+
+### Windows
+
+Clone the repository:
+
+```powershell
+git clone <REPOSITORY-URL>
+cd vimera
+````
+
+Run the installation script:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\INSTALL.ps1
+```
+
+Activate the environment:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Verify the installation:
+
+```powershell
+python -c "import vimera; print('VIMERA OK')"
+```
+
+### Linux / macOS
+
+Clone the repository:
+
+```bash
+git clone <REPOSITORY-URL>
+cd vimera
+```
+
+Run:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Activate the environment:
+
+```bash
+source .venv/bin/activate
+```
+
+Verify:
+
+```bash
+python -c "import vimera; print('VIMERA OK')"
+```
+
+### Conda
+
+A Conda environment specification is also provided:
+
+```bash
+conda env create -f environment.yml
+conda activate vimera
+```
+
+The Conda environment is optional; the platform-specific installation
+scripts use standard Python virtual environments.
+
+```
+```
+
 ---
 
 ## License
