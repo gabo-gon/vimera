@@ -117,7 +117,8 @@ fi
 # ------------------------------------------------------------
 # Install VIMERA
 # ------------------------------------------------------------
-
+echo
+"$VENV_PYTHON" -m pip install joblib matplotlib ndfes edgembar
 echo
 echo "[4/5] Installing VIMERA and dependencies..."
 

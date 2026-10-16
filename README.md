@@ -34,13 +34,9 @@ The user can define:
 * number of replicates
 * genome-selection strategy
 * sequencing quality/error conditions
+* simulating sequences for viral discovery
 
-Vimera retrieves appropriate reference genomes and uses established sequencing simulators rather than attempting to reproduce sequencing physics itself.
-
-Simulator integrations include:
-
-* InSilicoSeq
-* NanoSim
+Vimera retrieves appropriate reference genomes and uses sequencing simulators.
 
 Every generated dataset will retain detailed ground truth and provenance.
 
@@ -227,6 +223,16 @@ vimera simulate \
     --replicates 10
 ```
 
+```bash
+vimera simulate \
+    --targets 12637,12638,12639 \
+    --target_fasta local_sequences.fasta \
+    --abundance 0.001,0.0005,0.0001 \
+    --platform illumina \
+    --reads 100000 \
+    --replicates 10
+```
+
 The configuration system follows:
 
 ```text
@@ -292,7 +298,7 @@ v0.4  ONT simulation [done]
 v0.5  Rich background/community generation [done]
 v0.6  Empirical null distributions
 v0.7  Controlled spike-ins
-v0.8  Near-neighbor challenges
+v0.8  Near-neighbor challenges [done]
 v0.9  Automated benchmark matrices
 v1.0  Stable release + documentation + benchmark datasets
 ```
