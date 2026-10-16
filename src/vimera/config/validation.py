@@ -19,6 +19,9 @@ def validate_simulation_config(config: SimulationConfig) -> SimulationConfig:
         target.abundance for target in config.targets
     )
 
+    if config.background.abundance is None:
+        config.background.abundance = 1.0 - target_abundance
+
     background_abundance = config.background.abundance
 
     total_abundance = target_abundance + background_abundance

@@ -23,6 +23,7 @@ def simulate_command(
     *,
     config_path: str | None,
     targets: str | None,
+    target_fasta: list[str] | None,
     abundance: str | None,
     background_host: str | None,
     background_bacterial: str | None,
@@ -59,6 +60,7 @@ def simulate_command(
     try:
         cli_overrides = build_cli_overrides(
             targets=targets,
+            target_fasta=target_fasta,
             abundance=abundance,
             background_host=background_host,
             background_bacterial=background_bacterial,
@@ -243,16 +245,16 @@ def _print_resolved_configuration(
         f"{config.sequencing.replicates}"
     )
 
-    console.print(
-        "\n[bold]Targets:[/bold]"
-    )
-
+    console.print("\n[bold]Targets:[/bold]")
     for target in config.targets:
+        if target.taxid is not None:
+            identifier = f"TaxID {target.taxid}"
+        else:
+            identifier = f"FASTA {target.fasta_path}"
         console.print(
-            f"  • TaxID {target.taxid}"
+            f"  •  {identifier}"
             f" — abundance={target.abundance:g}"
-            f" — genome_selection="
-            f"{target.genome_selection.value}"
+            f" — genome_selection={target.genome_selection.value}"
         )
 
     console.print(

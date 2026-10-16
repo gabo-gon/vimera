@@ -71,48 +71,74 @@ class IlluminaSimulator:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _read_fasta(path: Path) -> str:
-        """Read a FASTA file and return the concatenated sequence.
+    def _read_fasta(
+        path: Path,
+        accession: str | None = None,
+    ) -> str:
+        """Read a FASTA sequence, optionally selecting a specific record."""
 
-        FASTA line wrapping is irrelevant: all non-header lines are
-        concatenated into one reference sequence.
-        """
+        path = Path(path)
 
         if not path.is_file():
             raise FileNotFoundError(
                 f"Reference FASTA does not exist: {path}"
             )
 
-        sequence_parts: list[str] = []
+        records: dict[str, list[str]] = {}
+        current_accession: str | None = None
 
-        with path.open(
-            "r",
-            encoding="utf-8",
-        ) as handle:
-            for line in handle:
+        with path.open("r", encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, start=1):
                 line = line.strip()
 
                 if not line:
                     continue
 
                 if line.startswith(">"):
+                    header = line[1:].strip()
+                    if not header:
+                        raise ValueError(
+                            f"Empty FASTA header at line {line_number} "
+                            f"in {path}."
+                        )
+
+                    current_accession = header.split()[0]
+                    if current_accession in records:
+                        raise ValueError(
+                            f"Duplicate FASTA record ID "
+                            f"{current_accession!r} in {path}."
+                        )
+
+                    records[current_accession] = []
                     continue
 
-                sequence_parts.append(line)
+                if current_accession is None:
+                    raise ValueError(
+                        f"Sequence data before the first FASTA header "
+                        f"at line {line_number} in {path}."
+                    )
+
+                records[current_accession].append(line)
+
+        if accession is not None:
+            if accession not in records:
+                raise ValueError(
+                    f"FASTA record {accession!r} was not found in {path}."
+                )
+            sequence_parts = records[accession]
+        else:
+            if len(records) != 1:
+                raise ValueError(
+                    f"{path} contains {len(records)} FASTA records. "
+                    "Specify an accession to select one record."
+                )
+            sequence_parts = next(iter(records.values()))
 
         sequence = "".join(sequence_parts).upper()
 
         if not sequence:
             raise ValueError(
-                f"Reference FASTA contains no sequence: {path}"
-            )
-
-        invalid = set(sequence) - set("ACGTN")
-
-        if invalid:
-            raise ValueError(
-                "Reference FASTA contains unsupported nucleotide "
-                f"characters {sorted(invalid)}: {path}"
+                f"Reference FASTA contains an empty sequence: {path}"
             )
 
         return sequence
@@ -481,6 +507,7 @@ class IlluminaSimulator:
     def _simulate_reference(
         self,
         reference_path: Path,
+        accession: str,
         number_of_reads: int,
         read_length: int,
         fragment_mean: float,
@@ -494,7 +521,8 @@ class IlluminaSimulator:
         """Generate paired reads from one reference."""
 
         sequence = self._read_fasta(
-            reference_path
+            reference_path,
+            accession=accession,
         )
 
         if len(sequence) < read_length:
@@ -733,6 +761,7 @@ class IlluminaSimulator:
 
                     self._simulate_reference(
                         reference_path=reference_path,
+                        accession=reference.accession,
                         number_of_reads=reference_reads,
                         read_length=read_length,
                         fragment_mean=config.fragment_mean,

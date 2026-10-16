@@ -195,27 +195,32 @@ def parse_abundances(
 
     return abundances
 
-
 def _build_target_overrides(
     targets: str | None,
+    target_fasta: list[str] | None,
     abundance: str | None,
 ) -> list[dict[str, Any]] | None:
-    """
-    Build the complete target override when targets are supplied.
+    """Build target overrides in TaxID-then-FASTA order."""
 
-    CLI target options replace the YAML target list rather than
-    appending to it.
-    """
-
-    if targets is None:
+    if targets is None and not target_fasta:
         return None
 
-    taxids = parse_taxids(targets)
+    target_overrides: list[dict[str, Any]] = []
 
-    target_overrides = [
-        {"taxid": taxid}
-        for taxid in taxids
-    ]
+    if targets is not None:
+        target_overrides.extend(
+            {"taxid": taxid}
+            for taxid in parse_taxids(targets)
+        )
+
+    if target_fasta:
+        target_overrides.extend(
+            {"fasta_path": str(Path(path).expanduser())}
+            for path in target_fasta
+        )
+
+    if not target_overrides:
+        return None
 
     if abundance is None:
         return target_overrides
@@ -225,7 +230,6 @@ def _build_target_overrides(
     if len(abundances) == 1:
         for target in target_overrides:
             target["abundance"] = abundances[0]
-
     elif len(abundances) == len(target_overrides):
         for target, value in zip(
             target_overrides,
@@ -233,19 +237,19 @@ def _build_target_overrides(
             strict=True,
         ):
             target["abundance"] = value
-
     else:
         raise ValueError(
-            "The number of abundances must be either 1 "
-            "or equal to the number of targets."
+            f"Received {len(abundances)} abundances for "
+            f"{len(target_overrides)} targets. Supply one abundance "
+            "to apply to every target, or one abundance per target."
         )
-
     return target_overrides
 
 
 def build_cli_overrides(
     *,
     targets: str | None = None,
+    target_fasta: list[str] | None = None,
     abundance: str | None = None,
     background_host: str | None = None,
     background_bacterial: str | None = None,
@@ -285,6 +289,7 @@ def build_cli_overrides(
 
     target_overrides = _build_target_overrides(
         targets=targets,
+        target_fasta=target_fasta,
         abundance=abundance,
     )
 
@@ -292,10 +297,6 @@ def build_cli_overrides(
         overrides["targets"] = target_overrides
 
     elif abundance is not None:
-        # We cannot safely apply abundance values to YAML targets
-        # until the YAML has been loaded and validated.
-        #
-        # This case is handled separately in load_simulation_config().
         overrides["_cli_abundance"] = parse_abundances(
             abundance
         )

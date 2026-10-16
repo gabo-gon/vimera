@@ -11,7 +11,7 @@ class ReferenceRecord:
     """A genome reference available to VIMERA."""
 
     accession: str
-    taxid: int
+    taxid: int | None
     fasta_path: Path
 
     source: str

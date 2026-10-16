@@ -16,12 +16,13 @@ from vimera.synthetic.genome_selection import (
     select_references,
 )
 
+from vimera.synthetic.fasta import resolve_fasta_references
 
 @dataclass(frozen=True)
 class ResolvedTarget:
     """A configured target with resolved genome references."""
 
-    taxid: int
+    taxid: int | None
     abundance: float
     references: tuple[ReferenceRecord, ...]
 
@@ -32,7 +33,21 @@ def resolve_target(
     *,
     seed: int | None = None,
 ) -> ResolvedTarget:
-    """Resolve genomes for one target."""
+    """Resolve a target from either a TaxID or a local FASTA."""
+
+    if target.fasta_path is not None:
+        references = resolve_fasta_references(target.fasta_path)
+
+        return ResolvedTarget(
+            taxid=None,
+            abundance=target.abundance,
+            references=tuple(references),
+        )
+
+    if target.taxid is None:
+        raise ValueError(
+            "Target must specify either a TaxID or a FASTA path."
+        )
 
     references = resolve_references(
         taxid=target.taxid,

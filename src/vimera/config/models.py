@@ -4,7 +4,13 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_validator,
+)
 
 
 class Platform(str, Enum):
@@ -59,28 +65,42 @@ class ReferenceConfig(BaseModel):
 
 
 class Target(BaseModel):
-    """A viral taxonomic target included in a synthetic community."""
+    """A TaxID-based or local-FASTA target in a synthetic community."""
 
     model_config = ConfigDict(extra="forbid")
 
-    taxid: int = Field(gt=0)
-
-    abundance: float = Field(
-        gt=0,
-        le=1,
-    )
-
+    taxid: int | None = Field(default=None, gt=0)
+    fasta_path: Path | None = None
+    abundance: float = Field(gt=0, le=1)
     genome_selection: GenomeSelection = GenomeSelection.REFERENCE
 
-    @field_validator("taxid")
-    @classmethod
-    def validate_taxid(cls, value: int) -> int:
-        if value <= 0:
+    @model_validator(mode="after")
+    def validate_target_source(self) -> "Target":
+        has_taxid = self.taxid is not None
+        has_fasta = self.fasta_path is not None
+
+        if has_taxid == has_fasta:
             raise ValueError(
-                "TaxID must be a positive integer."
+                "A target must specify exactly one of 'taxid' "
+                "or 'fasta_path'."
             )
 
-        return value
+        return self
+
+    @field_validator("fasta_path", mode="before")
+    @classmethod
+    def validate_fasta_path(cls, value: object) -> Path | None:
+        if value is None:
+            return None
+
+        path = Path(value).expanduser().resolve()
+
+        if not path.is_file():
+            raise ValueError(
+                f"Target FASTA file does not exist: {path}"
+            )
+
+        return path
 
 
 class Background(BaseModel):
@@ -186,24 +206,30 @@ class SimulationConfig(BaseModel):
 
     experiment_name: str = "experiment_001"
 
+    
     @field_validator("targets")
     @classmethod
-    def validate_targets(
-        cls,
-        targets: list[Target],
-    ) -> list[Target]:
-
+    def validate_targets(cls, targets: list[Target]) -> list[Target]:
         taxids = [
             target.taxid
             for target in targets
+            if target.taxid is not None
         ]
-
         if len(taxids) != len(set(taxids)):
+            raise ValueError("Duplicate TaxIDs are not allowed in targets.")
+
+        fasta_paths = [
+            target.fasta_path
+            for target in targets
+            if target.fasta_path is not None
+        ]
+        if len(fasta_paths) != len(set(fasta_paths)):
             raise ValueError(
-                "Duplicate TaxIDs are not allowed in targets."
+                "Duplicate FASTA paths are not allowed in targets."
             )
 
         return targets
+
 
 
 class NullConfig(BaseModel):

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import typer
+from pathlib import Path
 
 from vimera.cli.simulate import simulate_command
 from vimera.cli.null import null_command
@@ -10,6 +11,7 @@ from vimera.cli.spikein import spikein_command
 from vimera.cli.confidence import confidence_command
 from vimera.cli.evaluate import evaluate_command
 from vimera.cli.report import report_command
+from vimera.cli.simulate_evolution import simulate_evolution_command
 
 app = typer.Typer(
     name="vimera",
@@ -39,6 +41,19 @@ def simulate(
         "--targets",
         "-t",
         help="Comma-separated target TaxIDs. Replaces targets from YAML.",
+    ),
+    target_fasta: list[Path] | None = typer.Option(
+        None,
+        "--target-fasta",
+        help=(
+            "Local FASTA file to include as a target. "
+            "Repeat the option to add multiple FASTA files. "
+            "Combined target order is TaxIDs first, then FASTA files."
+        ),
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
     ),
     abundance: str | None = typer.Option(
         None,
@@ -157,6 +172,11 @@ def simulate(
     simulate_command(
         config_path=config,
         targets=targets,
+        target_fasta=(
+            [str(path) for path in target_fasta]
+            if target_fasta is not None
+            else None
+        ),
         abundance=abundance,
         background_host=background_host,
         background_bacterial=background_bacterial,
@@ -418,6 +438,58 @@ def report(
         report_type=report_type,
         format=format,
     )
-    
+
+@app.command("simulate-evolution")
+def simulate_evolution(
+    input_fasta: str = typer.Option(
+        ...,
+        "--input-fasta",
+        "-i",
+        help="Fasta file with original sequence",
+        exists=True,
+        readable=True,
+    ),
+    distance: float = typer.Option(
+        ...,
+        "--distance",
+        "-d",
+        min=0.0,
+        max=1.0,
+        help="Distance for simulated sequences.",
+    ),
+    output_fasta: str = typer.Option(
+        ...,
+        "--output",
+        "-o",
+        help="Output file",
+    ),
+    replicates: int | None = typer.Option(
+        1,
+        "--replicates",
+        "-r",
+        help="Number of independent simulation replicates.",
+    ),
+    seed: int | None = typer.Option(
+        42,
+        "--seed",
+        "-s",
+        help="Seed for random numbers.",
+    ),
+    kappa: float | None = typer.Option(
+        2.0,
+        "--kappa",
+        "-k",
+        help="Transition/Transversion weigth ratio to use in mutations.",
+    ),
+) -> None:
+    """Simulates sequences with some dsitance"""
+    simulate_evolution_command(
+        input_fasta=input_fasta,
+        distance=distance,
+        output_fasta=output_fasta,
+        replicates=replicates,
+        seed=seed,
+        kappa=kappa,
+    )    
 if __name__ == "__main__":
     app()
